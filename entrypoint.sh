@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-# Initialize the Airflow metadata database
+# 1. Initialize Airflow DB if not already done
 airflow db init
 
-# Create a default admin user if it doesn't exist
+# 2. Create a default admin user if it doesn't exist
 airflow users list | grep -q "admin" || airflow users create \
     --username admin \
     --firstname Admin \
@@ -13,21 +13,5 @@ airflow users list | grep -q "admin" || airflow users create \
     --email admin@example.com \
     --password admin
 
-# Start the Airflow service specified in the command
-case "$1" in
-  webserver)
-    exec airflow webserver
-    ;;
-  scheduler)
-    exec airflow scheduler
-    ;;
-  worker)
-    exec airflow celery worker
-    ;;
-  flower)
-    exec airflow celery flower
-    ;;
-  *)
-    exec "$@"
-    ;;
-esac
+# 3. Start Supervisor to run multiple Airflow processes
+exec /usr/bin/supervisord -c /etc/supervisord.conf
