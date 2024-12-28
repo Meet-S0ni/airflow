@@ -1,0 +1,6 @@
+            - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+              value: "postgresql+psycopg2://airflow:airflow@<PG-HOST>:5432/airflow"
+            - name: AIRFLOW__CELERY__BROKER_URL
+              value: "redis://<REDIS-HOST>:6379/0"
+            - name: AIRFLOW__CELERY__RESULT_BACKEND
+              value: "db+postgresql://airflow:airflow@<PG-HOST>:5432/airflow"
