@@ -1,17 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
-
-# 1. Initialize Airflow DB if not already done
-airflow db init
-
-# 2. Create a default admin user if it doesn't exist
-airflow users list | grep -q "admin" || airflow users create \
-    --username admin \
+if [ "$AIRFLOW_ROLE" = "webserver" ] && [ -n "$AIRFLOW_ADMIN_USER" ]; then
+  echo "Creating Airflow admin user..."
+  airflow users create \
+    --username "$AIRFLOW_ADMIN_USER" \
+    --password "$AIRFLOW_ADMIN_PASSWORD" \
     --firstname Admin \
     --lastname User \
     --role Admin \
-    --email admin@example.com \
-    --password admin
-
-# 3. Start Supervisor to run multiple Airflow processes
-exec /usr/bin/supervisord -c /etc/supervisord.conf
+    --email admin@example.com
+fi
+exec "$@"
