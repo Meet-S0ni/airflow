@@ -6,4 +6,16 @@
               value: "db+postgresql://airflow:airflow@<PG-HOST>:5432/airflow"
 
 
-eXK7kI_J9S94u_vIcjSmEZq2GUsKQhCrkQzTTP7kj_k=
+
+watch () {
+  ARGS="${@}"
+  clear;
+  while(true); do
+    OUTPUT=`$ARGS`
+    clear
+    echo -e "Every 1.0s: $ARGS"
+    echo ""
+    echo -e "${OUTPUT[@]}"
+    sleep 1
+  done
+}
