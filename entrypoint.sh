@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 set -e
-if [ "$AIRFLOW_ROLE" = "webserver" ] && [ -n "$AIRFLOW_ADMIN_USER" ]; then
+
+if ([ "$AIRFLOW__ROLE" = "standalone" ] || [ "$AIRFLOW__ROLE" = "webserver" ]) && [ -n "$AIRFLOW__ADMIN__USERNAME" ]; then
   echo "Creating Airflow admin user..."
   airflow users create \
-    --username "$AIRFLOW_ADMIN_USER" \
-    --password "$AIRFLOW_ADMIN_PASSWORD" \
+    --username "$AIRFLOW__ADMIN__USERNAME" \
+    --password "$AIRFLOW__ADMIN__PASSWORD" \
     --firstname Admin \
     --lastname User \
     --role Admin \
     --email admin@example.com
 fi
+
 exec "$@"
